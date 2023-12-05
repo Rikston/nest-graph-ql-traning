@@ -2,6 +2,14 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Album {
+  createdAt: DateTime!
+  id: ID!
+  title: String!
+  updatedAt: DateTime!
+  userId: Int
+}
+
 type Comment {
   body: String
   createdAt: DateTime!
@@ -24,6 +32,13 @@ input CreateCommentInput {
   name: String
 }
 
+input CreatePhotoInput {
+  albumId: Int!
+  thumbnailUrl: String!
+  title: String!
+  url: String!
+}
+
 input CreatePostInput {
   body: String
   title: String!
@@ -35,12 +50,26 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 scalar DateTime
 
 type Mutation {
+  createAlbum(title: String!, userId: Int): Album!
   createComment(createCommentInput: CreateCommentInput!, postId: ID!): Comment!
+  createPhoto(createPhotoInput: CreatePhotoInput!): Photo!
   createPost(createPostInput: CreatePostInput!): Post!
+  removeAlbum(id: ID!): Album!
   removeComment(id: Int!): Comment!
+  removePhoto(id: Int!): Photo!
   removePost(id: Int!): Post!
+  updateAlbum(updateAlbumInput: UpdateAlbumInput!): Album!
   updateComment(updateCommentInput: UpdateCommentInput!): Comment!
+  updatePhoto(updatePhotoInput: UpdatePhotoInput!): Photo!
   updatePost(updatePostInput: UpdatePostInput!): Post!
+}
+
+type Photo {
+  albumId: Int!
+  id: ID!
+  thumbnailUrl: String!
+  title: String!
+  url: String!
 }
 
 type Post {
@@ -58,8 +87,13 @@ type PostConnection {
 }
 
 type Query {
+  album(id: Float!): Album!
+  albums: [Album!]!
   comment(id: Int!): Comment!
   comments: [Comment!]!
+  photo(id: Int!): Photo!
+  photos: [Photo!]!
+  photosByAlbumId(albumId: Int!): [Photo!]!
   post(id: Int!): Post!
   posts: [Post!]!
   postsPaginated(page: Int! = 1, pageSize: Int! = 5): PostConnection!
@@ -69,11 +103,25 @@ type Subscription {
   postDeleted: Post!
 }
 
+input UpdateAlbumInput {
+  id: Int!
+  title: String!
+  userId: Int
+}
+
 input UpdateCommentInput {
   body: String
   email: String
   id: Int!
   name: String
+}
+
+input UpdatePhotoInput {
+  albumId: Int
+  id: Int!
+  thumbnailUrl: String
+  title: String
+  url: String
 }
 
 input UpdatePostInput {
